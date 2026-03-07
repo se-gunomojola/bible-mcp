@@ -15,7 +15,7 @@ Resources:
     biblical://chronology — Dates, genealogies, lifespan data
     biblical://context   — Political epochs, geographic data, cultural notes
 
-Author: TB Network / CLM Bible Study Project
+Author: Segun Omojola
 """
 
 from mcp.server.fastmcp import FastMCP
@@ -355,14 +355,17 @@ CHRONOLOGY: dict = {
     "adam_to_noah": {
         "period": "Creation to Flood",
         "figures": [
-            {"name": "Adam", "born": 0, "died": 930, "note": "AM (Anno Mundi — year of the world)"},
+            {"name": "Adam", "born": 0, "died": 930,
+                "note": "AM (Anno Mundi — year of the world)"},
             {"name": "Seth", "born": 130, "died": 1042},
             {"name": "Enosh", "born": 235, "died": 1140},
             {"name": "Kenan", "born": 325, "died": 1235},
             {"name": "Mahalalel", "born": 395, "died": 1290},
             {"name": "Jared", "born": 460, "died": 1422},
-            {"name": "Enoch", "born": 622, "died": 987, "note": "Taken — did not die"},
-            {"name": "Methuselah", "born": 687, "died": 1656, "note": "Died year of the Flood"},
+            {"name": "Enoch", "born": 622, "died": 987,
+                "note": "Taken — did not die"},
+            {"name": "Methuselah", "born": 687, "died": 1656,
+                "note": "Died year of the Flood"},
             {"name": "Lamech", "born": 874, "died": 1651},
             {"name": "Noah", "born": 1056, "died": 2006},
         ],
@@ -376,7 +379,8 @@ CHRONOLOGY: dict = {
             {"name": "Arpachshad", "born": 1658, "died": 2096},
             {"name": "Shelah", "born": 1693, "died": 2126},
             {"name": "Eber", "born": 1723, "died": 2187},
-            {"name": "Peleg", "born": 1757, "died": 1996, "note": "In his days the earth was divided"},
+            {"name": "Peleg", "born": 1757, "died": 1996,
+                "note": "In his days the earth was divided"},
             {"name": "Reu", "born": 1787, "died": 2026},
             {"name": "Serug", "born": 1819, "died": 2049},
             {"name": "Nahor", "born": 1849, "died": 1997},
@@ -390,10 +394,13 @@ CHRONOLOGY: dict = {
         "figures": [
             {"name": "Abraham", "born": 2008, "died": 2183, "born_bc": "c.2166 BC"},
             {"name": "Isaac", "born": 2108, "died": 2288, "born_bc": "c.2066 BC"},
-            {"name": "Jacob/Israel", "born": 2168, "died": 2315, "born_bc": "c.2006 BC"},
+            {"name": "Jacob/Israel", "born": 2168,
+                "died": 2315, "born_bc": "c.2006 BC"},
             {"name": "Joseph", "born": 2257, "died": 2347, "born_bc": "c.1915 BC"},
-            {"name": "Judah", "born": "c.2252", "died": "c.2352", "born_bc": "c.1920 BC"},
-            {"name": "Perez (son of Judah)", "born": "c.2290", "born_bc": "c.1882 BC"},
+            {"name": "Judah", "born": "c.2252",
+                "died": "c.2352", "born_bc": "c.1920 BC"},
+            {"name": "Perez (son of Judah)", "born": "c.2290",
+             "born_bc": "c.1882 BC"},
         ],
         "key_overlaps": [
             "Jacob and Shem: overlapped by 50 years — Shem was alive when Jacob was born",
@@ -418,12 +425,14 @@ CHRONOLOGY: dict = {
             {"name": "Hezron", "generation": 3},
             {"name": "Ram", "generation": 4},
             {"name": "Amminadab", "generation": 5},
-            {"name": "Nahshon", "generation": 6, "note": "Leader of Judah in the Exodus (Numbers 1:7)"},
+            {"name": "Nahshon", "generation": 6,
+                "note": "Leader of Judah in the Exodus (Numbers 1:7)"},
             {"name": "Salmon", "generation": 7, "note": "Married Rahab of Jericho"},
             {"name": "Boaz", "generation": 8, "note": "Ruth 4 — kinsman redeemer"},
             {"name": "Obed", "generation": 9},
             {"name": "Jesse", "generation": 10},
-            {"name": "David", "generation": 11, "note": "7th or 8th son of Jesse — anointed c.1010 BC"},
+            {"name": "David", "generation": 11,
+                "note": "7th or 8th son of Jesse — anointed c.1010 BC"},
         ],
         "chronological_note": "10 generations across ~430 years (Exodus to David) requires ~43 years per generation average. Likely telescoped — selective rather than complete.",
         "transmission_type": "Gap between Sinai covenant and David: ~430 years. Textual/institutional transmission. Torah preserved in the ark and taught by priests and Levites.",
@@ -555,6 +564,7 @@ class BibleReferenceInput(BaseModel):
         description="Which analysis section to run: 'context', 'lexicon', 'chronology', 'narrative', 'patterns', 'all'"
     )
 
+
 class LexiconInput(BaseModel):
     model_config = ConfigDict(
         str_strip_whitespace=True,
@@ -567,6 +577,7 @@ class LexiconInput(BaseModel):
         min_length=2,
         max_length=50
     )
+
 
 class ChronologyInput(BaseModel):
     model_config = ConfigDict(
@@ -584,6 +595,7 @@ class ChronologyInput(BaseModel):
         default=True,
         description="Whether to compute lifespan overlaps and generational concurrency"
     )
+
 
 class StudyInput(BaseModel):
     model_config = ConfigDict(
@@ -651,7 +663,7 @@ async def bible_lexicon(params: LexiconInput) -> str:
         if (term_lower in key or
             term_lower in entry.get("transliteration", "").lower() or
             term_lower in entry.get("hebrew", "").lower() or
-            term_lower in entry.get("greek", "").lower()):
+                term_lower in entry.get("greek", "").lower()):
             matches.append({"term": key, "entry": entry})
 
     if matches:
@@ -883,7 +895,8 @@ async def bible_context(params: BibleReferenceInput) -> str:
         ("ruth",               "judges"),
         ("1 samuel",           "united_monarchy"),
         ("2 samuel",           "united_monarchy"),
-        ("1 kings 11",         "divided_monarchy"),  # must come before "1 kings 1"
+        # must come before "1 kings 1"
+        ("1 kings 11",         "divided_monarchy"),
         ("1 kings 12",         "divided_monarchy"),
         ("1 kings 13",         "divided_monarchy"),
         ("1 kings 14",         "divided_monarchy"),
@@ -906,35 +919,46 @@ async def bible_context(params: BibleReferenceInput) -> str:
         ("1 kings 9",          "united_monarchy"),
         ("1 kings 10",         "united_monarchy"),
         ("2 kings",            "divided_monarchy"),
-        ("1 chronicles",       "persian_period"),   # written for post-exilic community
+        # written for post-exilic community
+        ("1 chronicles",       "persian_period"),
         ("2 chronicles",       "persian_period"),
         ("ezra",               "persian_period"),
         ("nehemiah",           "persian_period"),
         ("esther",             "persian_period"),
         # ── Wisdom & Poetry ──────────────────────────────────────────────────
-        ("job",                "patriarchal"),       # patriarchal setting; uncertain date
+        # patriarchal setting; uncertain date
+        ("job",                "patriarchal"),
         ("psalm 119",          "persian_period"),
-        ("psalms",             "divided_monarchy"),  # compilation spans; core is monarchic
+        # compilation spans; core is monarchic
+        ("psalms",             "divided_monarchy"),
         ("psalm",              "divided_monarchy"),
-        ("proverbs",           "united_monarchy"),   # Solomonic core; edited post-exile
-        ("ecclesiastes",       "persian_period"),    # likely late wisdom tradition
+        # Solomonic core; edited post-exile
+        ("proverbs",           "united_monarchy"),
+        # likely late wisdom tradition
+        ("ecclesiastes",       "persian_period"),
         ("song of solomon",    "united_monarchy"),
         ("song of songs",      "united_monarchy"),
         # ── Major Prophets ───────────────────────────────────────────────────
-        ("isaiah",             "divided_monarchy"),  # chs 1-39 pre-exilic; 40-66 exilic
+        # chs 1-39 pre-exilic; 40-66 exilic
+        ("isaiah",             "divided_monarchy"),
         ("jeremiah",           "babylonian_exile"),
         ("lamentations",       "babylonian_exile"),
         ("ezekiel",            "babylonian_exile"),
         ("daniel",             "babylonian_exile"),
         # ── Minor Prophets ───────────────────────────────────────────────────
-        ("hosea",              "divided_monarchy"),  # northern kingdom, 8th c. BC
+        # northern kingdom, 8th c. BC
+        ("hosea",              "divided_monarchy"),
         ("joel",               "persian_period"),    # post-exilic; date debated
-        ("amos",               "divided_monarchy"),  # northern kingdom, 8th c. BC
-        ("obadiah",            "babylonian_exile"),  # after Jerusalem's fall, 586 BC
+        # northern kingdom, 8th c. BC
+        ("amos",               "divided_monarchy"),
+        # after Jerusalem's fall, 586 BC
+        ("obadiah",            "babylonian_exile"),
         ("jonah",              "divided_monarchy"),  # Assyrian period setting
         ("micah",              "divided_monarchy"),  # 8th c. BC, Judah
-        ("nahum",              "divided_monarchy"),  # before fall of Nineveh, 612 BC
-        ("habakkuk",           "divided_monarchy"),  # late 7th c. BC, Babylonian threat
+        # before fall of Nineveh, 612 BC
+        ("nahum",              "divided_monarchy"),
+        # late 7th c. BC, Babylonian threat
+        ("habakkuk",           "divided_monarchy"),
         ("zephaniah",          "divided_monarchy"),  # reign of Josiah, 7th c. BC
         ("haggai",             "persian_period"),
         ("zechariah",          "persian_period"),
@@ -960,16 +984,20 @@ async def bible_context(params: BibleReferenceInput) -> str:
         ("titus",              "roman_period"),
         ("philemon",           "roman_period"),
         # ── General Epistles ─────────────────────────────────────────────────
-        ("hebrews",            "roman_period"),      # Jewish-Christian context, AD 60s
-        ("james",              "roman_period"),      # earliest NT letter, AD 40s-50s
-        ("1 peter",            "roman_period"),      # persecution under Nero, AD 64-68
+        # Jewish-Christian context, AD 60s
+        ("hebrews",            "roman_period"),
+        # earliest NT letter, AD 40s-50s
+        ("james",              "roman_period"),
+        # persecution under Nero, AD 64-68
+        ("1 peter",            "roman_period"),
         ("2 peter",            "roman_period"),
         ("1 john",             "roman_period"),
         ("2 john",             "roman_period"),
         ("3 john",             "roman_period"),
         ("jude",               "roman_period"),
         # ── Apocalyptic ──────────────────────────────────────────────────────
-        ("revelation",         "roman_period"),      # Domitian persecution, AD 90s
+        # Domitian persecution, AD 90s
+        ("revelation",         "roman_period"),
     ]
 
     matched_epoch = None
