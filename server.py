@@ -9,13 +9,15 @@ Tools:
     bible_lexicon        — Hebrew/Greek word analysis with semantic range
     bible_chronology     — Generational mapping, timeline computation, overlap detection
     bible_study          — Full 6-section deep analysis (orchestrates all tools)
+    bible_deep_study     — BibleDeepDive 4-layer study (Segun's methodology)
 
 Resources:
-    biblical://lexicon   — Hebrew/Greek term database
-    biblical://chronology — Dates, genealogies, lifespan data
-    biblical://context   — Political epochs, geographic data, cultural notes
+    biblical://lexicon      — Hebrew/Greek term database (35+ terms)
+    biblical://chronology   — Dates, genealogies, lifespan data
+    biblical://context      — Political epochs, geographic data, cultural notes
+    biblical://commentary   — Attributed commentary: Spurgeon, Calvin, Henry, Wright, Barclay
 
-Author: Segun Omojola
+Author: Segun Omojola 
 """
 
 from mcp.server.fastmcp import FastMCP
@@ -355,17 +357,14 @@ CHRONOLOGY: dict = {
     "adam_to_noah": {
         "period": "Creation to Flood",
         "figures": [
-            {"name": "Adam", "born": 0, "died": 930,
-                "note": "AM (Anno Mundi — year of the world)"},
+            {"name": "Adam", "born": 0, "died": 930, "note": "AM (Anno Mundi — year of the world)"},
             {"name": "Seth", "born": 130, "died": 1042},
             {"name": "Enosh", "born": 235, "died": 1140},
             {"name": "Kenan", "born": 325, "died": 1235},
             {"name": "Mahalalel", "born": 395, "died": 1290},
             {"name": "Jared", "born": 460, "died": 1422},
-            {"name": "Enoch", "born": 622, "died": 987,
-                "note": "Taken — did not die"},
-            {"name": "Methuselah", "born": 687, "died": 1656,
-                "note": "Died year of the Flood"},
+            {"name": "Enoch", "born": 622, "died": 987, "note": "Taken — did not die"},
+            {"name": "Methuselah", "born": 687, "died": 1656, "note": "Died year of the Flood"},
             {"name": "Lamech", "born": 874, "died": 1651},
             {"name": "Noah", "born": 1056, "died": 2006},
         ],
@@ -379,8 +378,7 @@ CHRONOLOGY: dict = {
             {"name": "Arpachshad", "born": 1658, "died": 2096},
             {"name": "Shelah", "born": 1693, "died": 2126},
             {"name": "Eber", "born": 1723, "died": 2187},
-            {"name": "Peleg", "born": 1757, "died": 1996,
-                "note": "In his days the earth was divided"},
+            {"name": "Peleg", "born": 1757, "died": 1996, "note": "In his days the earth was divided"},
             {"name": "Reu", "born": 1787, "died": 2026},
             {"name": "Serug", "born": 1819, "died": 2049},
             {"name": "Nahor", "born": 1849, "died": 1997},
@@ -394,13 +392,10 @@ CHRONOLOGY: dict = {
         "figures": [
             {"name": "Abraham", "born": 2008, "died": 2183, "born_bc": "c.2166 BC"},
             {"name": "Isaac", "born": 2108, "died": 2288, "born_bc": "c.2066 BC"},
-            {"name": "Jacob/Israel", "born": 2168,
-                "died": 2315, "born_bc": "c.2006 BC"},
+            {"name": "Jacob/Israel", "born": 2168, "died": 2315, "born_bc": "c.2006 BC"},
             {"name": "Joseph", "born": 2257, "died": 2347, "born_bc": "c.1915 BC"},
-            {"name": "Judah", "born": "c.2252",
-                "died": "c.2352", "born_bc": "c.1920 BC"},
-            {"name": "Perez (son of Judah)", "born": "c.2290",
-             "born_bc": "c.1882 BC"},
+            {"name": "Judah", "born": "c.2252", "died": "c.2352", "born_bc": "c.1920 BC"},
+            {"name": "Perez (son of Judah)", "born": "c.2290", "born_bc": "c.1882 BC"},
         ],
         "key_overlaps": [
             "Jacob and Shem: overlapped by 50 years — Shem was alive when Jacob was born",
@@ -425,14 +420,12 @@ CHRONOLOGY: dict = {
             {"name": "Hezron", "generation": 3},
             {"name": "Ram", "generation": 4},
             {"name": "Amminadab", "generation": 5},
-            {"name": "Nahshon", "generation": 6,
-                "note": "Leader of Judah in the Exodus (Numbers 1:7)"},
+            {"name": "Nahshon", "generation": 6, "note": "Leader of Judah in the Exodus (Numbers 1:7)"},
             {"name": "Salmon", "generation": 7, "note": "Married Rahab of Jericho"},
             {"name": "Boaz", "generation": 8, "note": "Ruth 4 — kinsman redeemer"},
             {"name": "Obed", "generation": 9},
             {"name": "Jesse", "generation": 10},
-            {"name": "David", "generation": 11,
-                "note": "7th or 8th son of Jesse — anointed c.1010 BC"},
+            {"name": "David", "generation": 11, "note": "7th or 8th son of Jesse — anointed c.1010 BC"},
         ],
         "chronological_note": "10 generations across ~430 years (Exodus to David) requires ~43 years per generation average. Likely telescoped — selective rather than complete.",
         "transmission_type": "Gap between Sinai covenant and David: ~430 years. Textual/institutional transmission. Torah preserved in the ark and taught by priests and Levites.",
@@ -470,6 +463,15 @@ CHRONOLOGY: dict = {
 }
 
 POLITICAL_EPOCHS: dict = {
+    "primordial": {
+        "approximate_dates": "Before recorded history — Genesis 1–11",
+        "political_structure": "None — pre-political. God as sole sovereign over creation. Human governance not yet established. The garden is a sacred space, not a political unit.",
+        "key_empires": "None — pre-empire. The first city is built by Cain (Genesis 4:17) — a significant theological detail.",
+        "economic_system": "Garden abundance (Eden), then subsistence agriculture after the fall. Cain is a farmer, Abel a herder — the two economies of the ancient world in tension from the start.",
+        "power_dynamics": "Creator/creature. The fundamental power dynamic is God speaking and reality obeying. Human power enters as stewardship (tselem) then distorts immediately into domination and violence (Cain, Lamech, Babel).",
+        "cultural_notes": "Genesis 1–11 is theological prehistory — the account of how things came to be as they are. Ancient Near Eastern parallels (Enuma Elish, Atrahasis, Epic of Gilgamesh) provide essential contrast. Israel's account is unique in depicting: creation by speech alone, creation as entirely good, humanity as image-bearers with dignity rather than slaves of the gods, and a flood sent for moral rather than political reasons.",
+        "ancient_near_east_context": "Genesis 1 is written in deliberate dialogue with surrounding cosmologies. Enuma Elish (Babylonian) depicts creation through divine conflict — Marduk slaying Tiamat and making the world from her corpse. Genesis counters: no conflict, no chaos-monster to defeat, no divine politics. God speaks and it is. The sun and moon are called 'great lights' and not named — because their names (Shamash and Sin) were the names of Babylonian deities. Genesis quietly demotes them from gods to lamps.",
+    },
     "patriarchal": {
         "approximate_dates": "2200-1800 BC",
         "political_structure": "Semi-nomadic clan system. No centralised state. Governed by patriarchal authority — the eldest male as clan head, judge, priest.",
@@ -545,6 +547,125 @@ POLITICAL_EPOCHS: dict = {
 }
 
 
+# ── Commentary Database ───────────────────────────────────────────────────────
+# Attributed insights from public domain commentators.
+# These are the voices of the tradition — not quotations but scholarly summaries
+# of their key interpretive moves, for use in Layer 3 of the deep study tool.
+
+COMMENTARY: dict = {
+    "genesis_1": {
+        "passage": "Genesis 1",
+        "commentaries": [
+            {
+                "commentator": "John Calvin",
+                "work": "Commentary on Genesis (1554)",
+                "insight": "Calvin argued that Moses wrote Genesis 1 as accommodation — adjusting his account to the capacity of ordinary people, not writing cosmological science. The six days are a theological framework, not a chronological report. The sun and moon are called 'great lights' and not by their divine names (Shamash and Sin) because Moses refused to grant divine honour to what God made as servants."
+            },
+            {
+                "commentator": "Matthew Henry",
+                "work": "Commentary on the Whole Bible (1708-1714)",
+                "insight": "Henry noted that 'and God saw that it was good' — repeated across the six days — is a theological declaration about the nature of the material world. Matter is not evil, not fallen in itself. The physical world is declared good by its Maker. This is the foundational claim against every form of Gnosticism and world-denial that would plague the church."
+            },
+            {
+                "commentator": "Charles Spurgeon",
+                "work": "Metropolitan Tabernacle sermons",
+                "insight": "Spurgeon preached on the light of the first day — created before the sun. He saw in this the pattern of all God's works: light before the lamp, grace before the instrument. God is not dependent on the means he has made. He can light a world before he hangs a sun in it. 'Let there be light' — the command that began creation is also the command that begins regeneration."
+            },
+            {
+                "commentator": "N.T. Wright",
+                "work": "The Day the Revolution Began (2016)",
+                "insight": "Wright argues that the description of humanity as image-bearers (tselem) is a deliberately royal and priestly concept borrowed from ancient Near Eastern usage and radically democratised. In Egypt only Pharaoh was the image of God on earth. Genesis insists that every human being — male and female together — holds this royal-priestly status. The human vocation is not religious activity but cosmic stewardship: to be God's representative presence throughout creation."
+            },
+            {
+                "commentator": "William Barclay",
+                "work": "Daily Study Bible Commentary",
+                "insight": "Barclay emphasised the Sabbath as the crown of creation, not an appendix to it. The seventh day receives the only blessing in the creation account. The week builds not toward work but toward rest — toward the cessation of striving and the enjoyment of what God has made. The Sabbath is built into the structure of time itself as a perpetual theological statement: the world belongs to God, not to human productivity."
+            }
+        ]
+    },
+    "genesis_22": {
+        "passage": "Genesis 22",
+        "commentaries": [
+            {
+                "commentator": "Matthew Henry",
+                "work": "Commentary on the Whole Bible (1708-1714)",
+                "insight": "Henry read Genesis 22 typologically — Isaac carrying the wood for his own sacrifice is Abraham's son bearing the instrument of death up the mountain. The ram caught in the thicket is provision at the last moment. The name Abraham gives the place — YHWH Yireh, 'the Lord will provide' — becomes a theological landmark. In the narrative logic of Scripture, this mountain is identified with Moriah, the site of Solomon's temple, the place where sacrifice would be offered for generations — until the final provision."
+            },
+            {
+                "commentator": "Charles Spurgeon",
+                "work": "Metropolitan Tabernacle sermons",
+                "insight": "Spurgeon observed that Abraham told his servants 'we will come back to you' — plural. He fully intended to return with Isaac. Hebrews 11:19 explains why: Abraham reasoned that God could raise the dead. His obedience was not resignation but expectation. He went up the mountain believing something unprecedented was about to happen. This is the shape of all mature faith — obedience grounded in resurrection confidence."
+            }
+        ]
+    },
+    "psalm_23": {
+        "passage": "Psalm 23",
+        "commentaries": [
+            {
+                "commentator": "Charles Spurgeon",
+                "work": "The Treasury of David (1869-1885)",
+                "insight": "Spurgeon called Psalm 23 the nightingale of the Psalms — small but of surpassing sweetness. He noted that David does not say the Lord is a shepherd to Israel generally, but 'my shepherd.' The personalisation is the entire theological point. The infinite God is not merely a general providence but a specific, attending care for this one person. David wrote from his own experience of shepherding — he knew exactly what a good shepherd does, and he marvelled that he himself had such a one."
+            },
+            {
+                "commentator": "Matthew Henry",
+                "work": "Commentary on the Whole Bible (1708-1714)",
+                "insight": "Henry observed that 'I shall not want' is not a prediction that hardship will not come but that in the midst of hardship nothing essential will be lacking. The valley of the shadow of death confirms that the psalm acknowledges darkness — but the shepherd's presence transforms what the darkness means. The table prepared in the presence of enemies is not in spite of the enemies but in full view of them — a statement of God's sovereignty over the hostile situation."
+            }
+        ]
+    },
+    "romans_8": {
+        "passage": "Romans 8",
+        "commentaries": [
+            {
+                "commentator": "John Calvin",
+                "work": "Commentary on Romans (1540)",
+                "insight": "Calvin on Romans 8:1 — 'there is therefore now no condemnation' — argued that the 'therefore' carries the full weight of chapters 1–7. It is the conclusion of a complete argument about sin, law, and grace. The no-condemnation is not a feeling to be attained but a status declared. It is forensic before it is experiential — the court has ruled, and no subsequent accusation can overturn the verdict."
+            },
+            {
+                "commentator": "N.T. Wright",
+                "work": "Paul and the Faithfulness of God (2013)",
+                "insight": "Wright reads Romans 8 as the climax of Paul's retelling of the Exodus story. The Spirit leading the sons of God (v.14) echoes the pillar of cloud leading Israel through the wilderness. The groaning creation (vv.19-22) is creation in exile, awaiting its own liberation. The hope of glory is not escape from the material world but the renewal of it — new creation, not no-creation. Romans 8 is not about going to heaven; it is about heaven coming to earth."
+            },
+            {
+                "commentator": "Charles Spurgeon",
+                "work": "Metropolitan Tabernacle sermons",
+                "insight": "Spurgeon on Romans 8:28 insisted that 'all things' must mean what it says. Not some things, not the pleasant things. All things. The bitter medicine, the closed door, the loss. The verse does not say all things are good but that all things work toward good — a different and more costly claim. The sovereignty of God over evil is not that he authors it but that he refuses to be defeated by it."
+            }
+        ]
+    },
+    "john_1": {
+        "passage": "John 1:1-18",
+        "commentaries": [
+            {
+                "commentator": "William Barclay",
+                "work": "Daily Study Bible — Gospel of John (1955)",
+                "insight": "Barclay wrote extensively on why John chose logos as his opening word. A Greek reader would recognise it immediately as the rational principle underlying the cosmos — the Stoic logos that held all things together. A Jewish reader would hear dabar — the creative, effectual word of God from Genesis. John's genius is that logos works in both worlds simultaneously. He tells the Greeks: the rational principle you have been searching for has a face. He tells the Jews: the creating word of God has become flesh."
+            },
+            {
+                "commentator": "N.T. Wright",
+                "work": "John for Everyone (2002)",
+                "insight": "Wright argues that 'the Word became flesh and dwelt among us' (John 1:14) is a direct echo of the tabernacle. The word translated 'dwelt' is literally 'tabernacled' (eskēnōsen). John is saying: the presence of God that once filled the tabernacle, then Solomon's temple, and then departed in Ezekiel's vision — that same presence has now taken up residence in a human person. The temple story reaches its unexpected climax not in a building but in a body."
+            }
+        ]
+    },
+    "psalm_119": {
+        "passage": "Psalm 119",
+        "commentaries": [
+            {
+                "commentator": "Charles Spurgeon",
+                "work": "The Treasury of David (1869-1885)",
+                "insight": "Spurgeon devoted enormous attention to Psalm 119, calling it the saints' classic on the Word of God. He noted that the psalmist does not merely commend the Torah abstractly but speaks of it with personal passion — 'I love your commandments above gold.' This is not legal observance but covenant delight. The psalmist has discovered that the Torah is not a cage but a home — the place where life makes sense and flourishes."
+            },
+            {
+                "commentator": "John Calvin",
+                "work": "Commentary on the Psalms (1557)",
+                "insight": "Calvin observed that Psalm 119's acrostic structure — 22 sections, one for each letter of the Hebrew alphabet — is itself a theological statement. The Torah encompasses all of reality from aleph to tav, as we would say from A to Z. No area of life lies outside its scope. The structure says: there is no letter, no word, no domain of existence that does not belong to the God whose Torah this is."
+            }
+        ]
+    }
+}
+
+
 # ── Input Models ──────────────────────────────────────────────────────────────
 
 class BibleReferenceInput(BaseModel):
@@ -564,7 +685,6 @@ class BibleReferenceInput(BaseModel):
         description="Which analysis section to run: 'context', 'lexicon', 'chronology', 'narrative', 'patterns', 'all'"
     )
 
-
 class LexiconInput(BaseModel):
     model_config = ConfigDict(
         str_strip_whitespace=True,
@@ -577,7 +697,6 @@ class LexiconInput(BaseModel):
         min_length=2,
         max_length=50
     )
-
 
 class ChronologyInput(BaseModel):
     model_config = ConfigDict(
@@ -595,7 +714,6 @@ class ChronologyInput(BaseModel):
         default=True,
         description="Whether to compute lifespan overlaps and generational concurrency"
     )
-
 
 class StudyInput(BaseModel):
     model_config = ConfigDict(
@@ -663,7 +781,7 @@ async def bible_lexicon(params: LexiconInput) -> str:
         if (term_lower in key or
             term_lower in entry.get("transliteration", "").lower() or
             term_lower in entry.get("hebrew", "").lower() or
-                term_lower in entry.get("greek", "").lower()):
+            term_lower in entry.get("greek", "").lower()):
             matches.append({"term": key, "entry": entry})
 
     if matches:
@@ -895,8 +1013,7 @@ async def bible_context(params: BibleReferenceInput) -> str:
         ("ruth",               "judges"),
         ("1 samuel",           "united_monarchy"),
         ("2 samuel",           "united_monarchy"),
-        # must come before "1 kings 1"
-        ("1 kings 11",         "divided_monarchy"),
+        ("1 kings 11",         "divided_monarchy"),  # must come before "1 kings 1"
         ("1 kings 12",         "divided_monarchy"),
         ("1 kings 13",         "divided_monarchy"),
         ("1 kings 14",         "divided_monarchy"),
@@ -919,46 +1036,35 @@ async def bible_context(params: BibleReferenceInput) -> str:
         ("1 kings 9",          "united_monarchy"),
         ("1 kings 10",         "united_monarchy"),
         ("2 kings",            "divided_monarchy"),
-        # written for post-exilic community
-        ("1 chronicles",       "persian_period"),
+        ("1 chronicles",       "persian_period"),   # written for post-exilic community
         ("2 chronicles",       "persian_period"),
         ("ezra",               "persian_period"),
         ("nehemiah",           "persian_period"),
         ("esther",             "persian_period"),
         # ── Wisdom & Poetry ──────────────────────────────────────────────────
-        # patriarchal setting; uncertain date
-        ("job",                "patriarchal"),
+        ("job",                "patriarchal"),       # patriarchal setting; uncertain date
         ("psalm 119",          "persian_period"),
-        # compilation spans; core is monarchic
-        ("psalms",             "divided_monarchy"),
+        ("psalms",             "divided_monarchy"),  # compilation spans; core is monarchic
         ("psalm",              "divided_monarchy"),
-        # Solomonic core; edited post-exile
-        ("proverbs",           "united_monarchy"),
-        # likely late wisdom tradition
-        ("ecclesiastes",       "persian_period"),
+        ("proverbs",           "united_monarchy"),   # Solomonic core; edited post-exile
+        ("ecclesiastes",       "persian_period"),    # likely late wisdom tradition
         ("song of solomon",    "united_monarchy"),
         ("song of songs",      "united_monarchy"),
         # ── Major Prophets ───────────────────────────────────────────────────
-        # chs 1-39 pre-exilic; 40-66 exilic
-        ("isaiah",             "divided_monarchy"),
+        ("isaiah",             "divided_monarchy"),  # chs 1-39 pre-exilic; 40-66 exilic
         ("jeremiah",           "babylonian_exile"),
         ("lamentations",       "babylonian_exile"),
         ("ezekiel",            "babylonian_exile"),
         ("daniel",             "babylonian_exile"),
         # ── Minor Prophets ───────────────────────────────────────────────────
-        # northern kingdom, 8th c. BC
-        ("hosea",              "divided_monarchy"),
+        ("hosea",              "divided_monarchy"),  # northern kingdom, 8th c. BC
         ("joel",               "persian_period"),    # post-exilic; date debated
-        # northern kingdom, 8th c. BC
-        ("amos",               "divided_monarchy"),
-        # after Jerusalem's fall, 586 BC
-        ("obadiah",            "babylonian_exile"),
+        ("amos",               "divided_monarchy"),  # northern kingdom, 8th c. BC
+        ("obadiah",            "babylonian_exile"),  # after Jerusalem's fall, 586 BC
         ("jonah",              "divided_monarchy"),  # Assyrian period setting
         ("micah",              "divided_monarchy"),  # 8th c. BC, Judah
-        # before fall of Nineveh, 612 BC
-        ("nahum",              "divided_monarchy"),
-        # late 7th c. BC, Babylonian threat
-        ("habakkuk",           "divided_monarchy"),
+        ("nahum",              "divided_monarchy"),  # before fall of Nineveh, 612 BC
+        ("habakkuk",           "divided_monarchy"),  # late 7th c. BC, Babylonian threat
         ("zephaniah",          "divided_monarchy"),  # reign of Josiah, 7th c. BC
         ("haggai",             "persian_period"),
         ("zechariah",          "persian_period"),
@@ -984,20 +1090,16 @@ async def bible_context(params: BibleReferenceInput) -> str:
         ("titus",              "roman_period"),
         ("philemon",           "roman_period"),
         # ── General Epistles ─────────────────────────────────────────────────
-        # Jewish-Christian context, AD 60s
-        ("hebrews",            "roman_period"),
-        # earliest NT letter, AD 40s-50s
-        ("james",              "roman_period"),
-        # persecution under Nero, AD 64-68
-        ("1 peter",            "roman_period"),
+        ("hebrews",            "roman_period"),      # Jewish-Christian context, AD 60s
+        ("james",              "roman_period"),      # earliest NT letter, AD 40s-50s
+        ("1 peter",            "roman_period"),      # persecution under Nero, AD 64-68
         ("2 peter",            "roman_period"),
         ("1 john",             "roman_period"),
         ("2 john",             "roman_period"),
         ("3 john",             "roman_period"),
         ("jude",               "roman_period"),
         # ── Apocalyptic ──────────────────────────────────────────────────────
-        # Domitian persecution, AD 90s
-        ("revelation",         "roman_period"),
+        ("revelation",         "roman_period"),      # Domitian persecution, AD 90s
     ]
 
     matched_epoch = None
@@ -1273,6 +1375,233 @@ Using the verified chronology data above:
     }, indent=2, ensure_ascii=False)
 
 
+class DeepStudyInput(BaseModel):
+    model_config = ConfigDict(
+        str_strip_whitespace=True,
+        validate_assignment=True,
+        extra="forbid"
+    )
+    reference: str = Field(
+        ...,
+        description="Bible chapter or passage for 4-layer deep study. Examples: 'Genesis 1', 'Psalm 23', 'Romans 8', 'John 1:1-18'",
+        min_length=2,
+        max_length=100
+    )
+
+
+@mcp.tool(
+    name="bible_deep_study",
+    annotations={
+        "title": "4-Layer Deep Bible Study (BibleDeepDive)",
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": True,
+        "openWorldHint": False
+    }
+)
+async def bible_deep_study(params: DeepStudyInput) -> str:
+    """
+    Delivers a full 4-layer BibleDeepDive analysis for any passage.
+
+    Segun's 4-layer study methodology:
+        Layer 1 — Chapter Breakdown
+            Verse-by-verse depth, original language precision, historical and
+            political context. What the text is actually saying, grounded in
+            the world that produced it.
+
+        Layer 2 — Cross-Linkages
+            Thematic and verbal connections across all of Scripture.
+            OT echoes, NT fulfilments, type and antitype, structural parallels.
+            Where does this passage sit in the whole story?
+
+        Layer 3 — Commentary Insights
+            Attributed voices from the tradition: Spurgeon, Calvin, Matthew Henry,
+            N.T. Wright, William Barclay. What has the church seen in this text
+            across the centuries? Where do the commentators agree, and where do
+            they see different things?
+
+        Layer 4 — Current Scenario
+            Intelligent, specific parallels between the ancient text and today's
+            world. Not superficial application but genuine structural mapping —
+            where does this ancient situation illuminate present realities?
+
+    This tool orchestrates all available databases:
+        - LEXICON for original language precision
+        - POLITICAL_EPOCHS for historical context
+        - CHRONOLOGY for generational and transmission data
+        - COMMENTARY for attributed tradition insights
+
+    Args:
+        params (DeepStudyInput): Input containing:
+            - reference (str): Bible chapter or passage to study
+
+    Returns:
+        str: JSON with all structured data + layered analysis prompt for Claude to execute
+    """
+    ref = params.reference
+    ref_lower = ref.lower()
+
+    # ── 1. Get historical context ─────────────────────────────────────────────
+    context_params = BibleReferenceInput(reference=ref)
+    context_result = await bible_context(context_params)
+    context_data = json.loads(context_result)
+
+    # ── 2. Get chronology data ────────────────────────────────────────────────
+    chron_params = ChronologyInput(reference=ref, compute_overlaps=True)
+    chron_result = await bible_chronology(chron_params)
+    chron_data = json.loads(chron_result)
+
+    # ── 3. Get relevant lexicon terms ─────────────────────────────────────────
+    term_hints = {
+        "genesis 1": ["bara", "ruach", "elohim", "dabar", "tselem", "qadosh", "shema"],
+        "genesis 2": ["nephesh", "mishkan", "tselem", "dabar", "hesed"],
+        "genesis 3": ["nephesh", "berith", "hesed", "mishpat"],
+        "genesis 22": ["berith", "hesed", "bekhor", "mishpat"],
+        "genesis": ["toledot", "hesed", "dabar", "ruach", "bara", "berith"],
+        "exodus": ["hesed", "kabod", "torah", "qadosh", "hesed_emet", "mishkan", "shema"],
+        "leviticus": ["qadosh", "mishkan", "berith", "mishpat", "tsaddiq"],
+        "numbers": ["mishkan", "shema", "berith", "anawim"],
+        "deuteronomy": ["shema", "torah", "berith", "hesed", "mishpat"],
+        "psalm 23": ["hesed", "mishpat", "tsaddiq", "ruach"],
+        "psalm 119": ["torah", "hesed", "ashrei", "emet", "dabar", "emunah", "mishpat"],
+        "psalm": ["torah", "hesed", "ashrei", "emet", "dabar", "anawim"],
+        "isaiah": ["kabod", "qadosh", "hesed", "mishpat", "malak", "soteria"],
+        "jeremiah": ["berith", "hesed", "mishpat", "shema"],
+        "ezekiel": ["kabod", "ruach", "mishkan", "berith"],
+        "daniel": ["malak", "mysterion", "parousia"],
+        "hosea": ["hesed", "berith", "shema", "dabar"],
+        "amos": ["mishpat", "tsaddiq", "anawim", "shema"],
+        "micah": ["mishpat", "hesed", "berith"],
+        "habakkuk": ["emunah", "tsaddiq", "mishpat"],
+        "matthew": ["ekklesia", "dikaiosyne", "huios", "parousia", "soteria", "mysterion"],
+        "mark": ["huios", "kairos", "soteria", "ekklesia"],
+        "luke": ["soteria", "anawim", "kairos", "huios", "dikaiosyne"],
+        "john 1": ["logos", "sarx", "mishkan", "pneuma", "huios", "charis"],
+        "john": ["logos", "agape", "pistis", "kairos", "pneuma", "huios"],
+        "acts": ["kairos", "charis", "pistis", "ekklesia", "soteria", "pneuma"],
+        "romans": ["pistis", "charis", "dikaiosyne", "sarx", "pneuma", "apolutrosis", "huios"],
+        "1 corinthians": ["agape", "charis", "logos", "pneuma", "ekklesia", "sarx"],
+        "2 corinthians": ["charis", "sarx", "pneuma", "dikaiosyne"],
+        "galatians": ["pistis", "charis", "emunah", "sarx", "pneuma", "apolutrosis"],
+        "ephesians": ["charis", "agape", "mysterion", "ekklesia", "apolutrosis"],
+        "philippians": ["charis", "dikaiosyne", "soteria"],
+        "colossians": ["mysterion", "apolutrosis", "logos", "sarx"],
+        "1 thessalonians": ["parousia", "pistis", "agape"],
+        "hebrews": ["berith", "mishkan", "huios", "apolutrosis", "pistis", "emunah"],
+        "james": ["pistis", "mishpat", "anawim", "dikaiosyne"],
+        "1 peter": ["apolutrosis", "qadosh", "parousia", "soteria"],
+        "revelation": ["parousia", "mysterion", "ekklesia", "soteria", "kairos"],
+    }
+
+    suggested_terms = ["hesed", "dabar", "qadosh", "emunah"]  # default
+    for book_key, terms in term_hints.items():
+        if book_key in ref_lower:
+            suggested_terms = terms
+            break
+
+    lexicon_entries = {k: LEXICON[k] for k in suggested_terms if k in LEXICON}
+
+    # ── 4. Get commentary for this passage ────────────────────────────────────
+    commentary_entries = []
+    commentary_key_map = {
+        "genesis 1": "genesis_1",
+        "genesis 22": "genesis_22",
+        "psalm 23": "psalm_23",
+        "psalm 119": "psalm_119",
+        "romans 8": "romans_8",
+        "john 1": "john_1",
+    }
+
+    matched_commentary_key = None
+    for ref_fragment, key in commentary_key_map.items():
+        if ref_fragment in ref_lower:
+            matched_commentary_key = key
+            break
+
+    if matched_commentary_key and matched_commentary_key in COMMENTARY:
+        commentary_entries = COMMENTARY[matched_commentary_key]["commentaries"]
+
+    commentary_text = ""
+    if commentary_entries:
+        commentary_text = "\n\nCOMMENTARY DATABASE ENTRIES FOR THIS PASSAGE:\n"
+        for c in commentary_entries:
+            commentary_text += f"\n{c['commentator']} ({c['work']}):\n{c['insight']}\n"
+
+    # ── 5. Build the 4-layer analysis prompt ──────────────────────────────────
+    analysis_prompt = f"""
+BIBLEDEEPDIVE — 4-LAYER STUDY ANALYSIS
+Reference: {ref}
+
+You are delivering Segun's 4-layer Bible study methodology.
+The structured data below is your verified foundation. Use it.
+Do not contradict the historical context or lexicon data provided.
+
+═══════════════════════════════════════════════
+VERIFIED HISTORICAL CONTEXT
+═══════════════════════════════════════════════
+{json.dumps(context_data, indent=2, ensure_ascii=False)}
+
+═══════════════════════════════════════════════
+CHRONOLOGICAL DATA
+═══════════════════════════════════════════════
+{json.dumps(chron_data, indent=2, ensure_ascii=False)}
+
+═══════════════════════════════════════════════
+KEY TERM LEXICON ENTRIES
+═══════════════════════════════════════════════
+{json.dumps(lexicon_entries, indent=2, ensure_ascii=False)}
+{commentary_text}
+
+═══════════════════════════════════════════════
+NOW DELIVER ALL 4 LAYERS IN SEQUENCE:
+═══════════════════════════════════════════════
+
+LAYER 1 — CHAPTER BREAKDOWN
+Using the verified context and lexicon entries above:
+- What is the passage actually communicating? What argument or narrative is being built?
+- Surface key original language terms and explain what is lost in English translation
+- Establish the historical and political world the text assumes
+- Trace the structure and movement through the passage — how does it build?
+- What would the original hearers have understood that modern readers miss?
+
+LAYER 2 — CROSS-LINKAGES
+- What earlier scriptures does this passage echo, fulfil, or subvert?
+- What later scriptures does it anticipate, explain, or complete?
+- Trace specific verbal echoes and thematic threads (creation → new creation; Exodus → new Exodus; temple → incarnation, etc.)
+- Where do the Testaments speak to each other through this passage?
+- Identify type and antitype, promise and fulfilment, shadow and substance
+
+LAYER 3 — COMMENTARY INSIGHTS
+- Draw on the commentary entries above and synthesise them
+- Where do the commentators agree? Where do they see different things?
+- What has the tradition seen in this passage across the centuries?
+- What is your own synthesis — what does this passage ultimately mean?
+- What interpretive move is most important for the serious student to grasp?
+
+LAYER 4 — CURRENT SCENARIO
+- What present-day situations, tensions, or questions does this passage directly address?
+- Not superficial application but genuine structural parallels — where does this ancient situation map precisely onto today?
+- Be specific and concrete. Name real situations. Avoid vague spiritual clichés.
+- Where is the world today in a situation structurally identical to the world of this text?
+- What does this passage demand of the person who takes it seriously in 2025?
+"""
+
+    return json.dumps({
+        "reference": ref,
+        "methodology": "BibleDeepDive 4-Layer Study",
+        "layers": ["Chapter Breakdown", "Cross-Linkages", "Commentary Insights", "Current Scenario"],
+        "context_data": context_data,
+        "chronology_data": chron_data,
+        "lexicon_entries": lexicon_entries,
+        "commentary_entries": commentary_entries,
+        "suggested_key_terms": suggested_terms,
+        "has_commentary": len(commentary_entries) > 0,
+        "analysis_prompt": analysis_prompt,
+        "instruction": "Execute all 4 layers in sequence. Use the structured data as your verified foundation. Do not skip any layer.",
+        "mcp_note": "BibleDeepDive methodology — bible_deep_study tool v1.0. Powered by bible-mcp structured database."
+    }, indent=2, ensure_ascii=False)
+
+
 # ── Resources ─────────────────────────────────────────────────────────────────
 
 @mcp.resource("biblical://lexicon")
@@ -1303,6 +1632,16 @@ def get_context_resource() -> str:
     power dynamics, and geographic realities for each biblical period.
     """
     return json.dumps(POLITICAL_EPOCHS, indent=2, ensure_ascii=False)
+
+
+@mcp.resource("biblical://commentary")
+def get_commentary_resource() -> str:
+    """
+    Commentary database.
+    Contains attributed insights from Spurgeon, Calvin, Matthew Henry,
+    N.T. Wright, and William Barclay for key biblical passages.
+    """
+    return json.dumps(COMMENTARY, indent=2, ensure_ascii=False)
 
 
 # ── Entry Point ───────────────────────────────────────────────────────────────
