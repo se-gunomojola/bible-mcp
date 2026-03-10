@@ -9,7 +9,7 @@ Tools:
     bible_lexicon        — Hebrew/Greek word analysis with semantic range
     bible_chronology     — Generational mapping, timeline computation, overlap detection
     bible_study          — Full 6-section deep analysis (orchestrates all tools)
-    bible_deep_study     — BibleDeepDive 4-layer study (Segun's methodology)
+    bible_deep_study     — BibleDeepDive 8-layer study (Segun's methodology)
 
 Resources:
     biblical://lexicon      — Hebrew/Greek term database (35+ terms)
@@ -17,7 +17,7 @@ Resources:
     biblical://context      — Political epochs, geographic data, cultural notes
     biblical://commentary   — Attributed commentary: Spurgeon, Calvin, Henry, Wright, Barclay
 
-Author: Segun Omojola 
+Author: Segun Omojola — TB Network Bible Study Project
 """
 
 from mcp.server.fastmcp import FastMCP
@@ -1383,7 +1383,7 @@ class DeepStudyInput(BaseModel):
     )
     reference: str = Field(
         ...,
-        description="Bible chapter or passage for 4-layer deep study. Examples: 'Genesis 1', 'Psalm 23', 'Romans 8', 'John 1:1-18'",
+        description="Bible chapter or passage for 8-layer deep study. Examples: 'Genesis 1', 'Psalm 23', 'Romans 8', 'John 1:1-18'",
         min_length=2,
         max_length=100
     )
@@ -1401,42 +1401,40 @@ class DeepStudyInput(BaseModel):
 )
 async def bible_deep_study(params: DeepStudyInput) -> str:
     """
-    Delivers a full 4-layer BibleDeepDive analysis for any passage.
+    Delivers a full 8-layer BibleDeepDive analysis for any passage.
 
-    Segun's 4-layer study methodology:
+    Segun's 8-layer study methodology:
         Layer 1 — Chapter Breakdown
-            Verse-by-verse depth, original language precision, historical and
-            political context. What the text is actually saying, grounded in
-            the world that produced it.
+            Original language precision, historical and political grounding.
+            What the text actually says in its world.
 
-        Layer 2 — Cross-Linkages
+        Layer 2 — Structural and Literary Craft
+            How the form carries meaning — chiasm, parallelism, genre,
+            narrative arc. The craft of the text as theological argument.
+
+        Layer 3 — Covenantal Framework
+            Which covenant is in view, what obligations and promises apply,
+            how this passage advances the covenant chain.
+
+        Layer 4 — Cross-Linkages
             Thematic and verbal connections across all of Scripture.
-            OT echoes, NT fulfilments, type and antitype, structural parallels.
-            Where does this passage sit in the whole story?
+            OT echoes, NT fulfilments, type and antitype.
 
-        Layer 3 — Commentary Insights
-            Attributed voices from the tradition: Spurgeon, Calvin, Matthew Henry,
-            N.T. Wright, William Barclay. What has the church seen in this text
-            across the centuries? Where do the commentators agree, and where do
-            they see different things?
+        Layer 5 — Christocentric Reading
+            Christ as the interpretive centre. How this passage points to,
+            finds fulfilment in, or illuminates Jesus Christ.
 
-        Layer 4 — Current Scenario
-            Intelligent, specific parallels between the ancient text and today's
-            world. Not superficial application but genuine structural mapping —
-            where does this ancient situation illuminate present realities?
+        Layer 6 — Doctrinal Theology
+            What this passage teaches about God, humanity, salvation,
+            the Spirit, the church, and last things.
 
-    This tool orchestrates all available databases:
-        - LEXICON for original language precision
-        - POLITICAL_EPOCHS for historical context
-        - CHRONOLOGY for generational and transmission data
-        - COMMENTARY for attributed tradition insights
+        Layer 7 — Commentary Insights
+            Attributed voices: Spurgeon, Calvin, Matthew Henry,
+            N.T. Wright, William Barclay. The wisdom of the tradition.
 
-    Args:
-        params (DeepStudyInput): Input containing:
-            - reference (str): Bible chapter or passage to study
-
-    Returns:
-        str: JSON with all structured data + layered analysis prompt for Claude to execute
+        Layer 8 — Current Scenario
+            Specific, concrete parallels to today's world. Where this
+            ancient text meets present realities with precision.
     """
     ref = params.reference
     ref_lower = ref.lower()
@@ -1527,14 +1525,15 @@ async def bible_deep_study(params: DeepStudyInput) -> str:
         for c in commentary_entries:
             commentary_text += f"\n{c['commentator']} ({c['work']}):\n{c['insight']}\n"
 
-    # ── 5. Build the 4-layer analysis prompt ──────────────────────────────────
+    # ── 5. Build the 8-layer analysis prompt ──────────────────────────────────
     analysis_prompt = f"""
-BIBLEDEEPDIVE — 4-LAYER STUDY ANALYSIS
+BIBLEDEEPDIVE — 8-LAYER STUDY ANALYSIS
 Reference: {ref}
 
-You are delivering Segun's 4-layer Bible study methodology.
-The structured data below is your verified foundation. Use it.
-Do not contradict the historical context or lexicon data provided.
+You are delivering Segun's 8-layer BibleDeepDive methodology.
+The structured data below is your verified foundation. Use it precisely.
+Do not contradict the historical context, lexicon, or chronological data provided.
+Do not skip any layer. Each layer is essential and distinct.
 
 ═══════════════════════════════════════════════
 VERIFIED HISTORICAL CONTEXT
@@ -1553,43 +1552,94 @@ KEY TERM LEXICON ENTRIES
 {commentary_text}
 
 ═══════════════════════════════════════════════
-NOW DELIVER ALL 4 LAYERS IN SEQUENCE:
+DELIVER ALL 8 LAYERS IN SEQUENCE — DO NOT SKIP ANY
 ═══════════════════════════════════════════════
 
 LAYER 1 — CHAPTER BREAKDOWN
-Using the verified context and lexicon entries above:
+The world of the text. Original language precision. Historical and political grounding.
 - What is the passage actually communicating? What argument or narrative is being built?
-- Surface key original language terms and explain what is lost in English translation
-- Establish the historical and political world the text assumes
+- Surface key original language terms — explain exactly what is lost in English translation
+- Use the verified historical context above to establish the world the text assumes
 - Trace the structure and movement through the passage — how does it build?
-- What would the original hearers have understood that modern readers miss?
+- What would the original hearers have understood that modern readers miss entirely?
+- What is the authorial intent grounded in this specific historical moment?
 
-LAYER 2 — CROSS-LINKAGES
-- What earlier scriptures does this passage echo, fulfil, or subvert?
-- What later scriptures does it anticipate, explain, or complete?
-- Trace specific verbal echoes and thematic threads (creation → new creation; Exodus → new Exodus; temple → incarnation, etc.)
+LAYER 2 — STRUCTURAL AND LITERARY CRAFT
+How the form carries the meaning. This is separate from content.
+- What literary genre is this — poetry, narrative, prophecy, epistle, apocalyptic?
+- Identify structural features: chiasm, parallelism, inclusio, refrain, acrostic, narrative arc
+- How does the structure itself make a theological argument?
+- What is the effect of the repetitions, contrasts, and silences in the text?
+- What does the form demand of the reader that prose could not achieve?
+- Where does the literary craft amplify, intensify, or subvert what the words alone say?
+
+LAYER 3 — COVENANTAL FRAMEWORK
+Where this passage sits in the covenant structure of all Scripture.
+- Which covenant is the primary context — Noahic, Abrahamic, Mosaic, Davidic, or New Covenant?
+- What are the covenant obligations, promises, and consequences in view in this passage?
+- How does this passage advance, fulfil, tension, or renew that covenant?
+- Where does this covenant moment connect backward and forward in the covenant chain?
+- Is this passage depicting covenant faithfulness, covenant failure, or covenant renewal?
+- What does this passage reveal about God as covenant-keeper?
+
+LAYER 4 — CROSS-LINKAGES
+The passage in conversation with all of Scripture.
+- What earlier scriptures does this passage echo, fulfil, quote, or subvert?
+- What later scriptures does it anticipate, explain, or find fulfilment in?
+- Trace specific verbal echoes and thematic threads across both Testaments
 - Where do the Testaments speak to each other through this passage?
 - Identify type and antitype, promise and fulfilment, shadow and substance
+- What is the canonical weight of this passage — how central is it to the biblical story?
 
-LAYER 3 — COMMENTARY INSIGHTS
-- Draw on the commentary entries above and synthesise them
-- Where do the commentators agree? Where do they see different things?
-- What has the tradition seen in this passage across the centuries?
-- What is your own synthesis — what does this passage ultimately mean?
-- What interpretive move is most important for the serious student to grasp?
+LAYER 5 — CHRISTOCENTRIC READING
+Christ as the interpretive centre of all Scripture.
+- How does this passage point to, find its fulfilment in, or illuminate Jesus Christ?
+- For OT passages: where is Christ as the antitype, the fulfilment, the embodiment of what this text promises or demands?
+- For NT passages: how does this passage deepen our understanding of who Christ is and what he has done?
+- What does this passage reveal about Christ's person, work, offices (prophet, priest, king), or mission?
+- How did Jesus himself read or apply this kind of passage?
+- What would be lost in our understanding of Christ if this passage did not exist?
 
-LAYER 4 — CURRENT SCENARIO
+LAYER 6 — DOCTRINAL THEOLOGY
+What this passage teaches about the great doctrines of the faith.
+- What attributes of God are on display — his holiness, justice, mercy, sovereignty, faithfulness?
+- What does this passage contribute to the doctrine of humanity — the imago Dei, sin, redemption, vocation?
+- What does it teach about salvation — justification, sanctification, glorification?
+- Where does it speak to the doctrines of the Spirit, the church, or last things?
+- Where does this passage sit in the great doctrinal conversations and controversies of the church?
+- What heresy or error does this passage directly correct or prevent?
+
+LAYER 7 — COMMENTARY INSIGHTS
+The voices of the tradition across the centuries.
+- Draw on the commentary entries above — engage each commentator substantively
+- Where do the commentators agree? Where do they see different or complementary things?
+- What has the church seen in this passage that individual reading tends to miss?
+- What is the most important interpretive move in the tradition for the serious student to grasp?
+- Provide your own synthesis: what does this passage ultimately mean, having heard the tradition?
+
+LAYER 8 — CURRENT SCENARIO
+Where this ancient text meets the present world with precision.
 - What present-day situations, tensions, or questions does this passage directly address?
-- Not superficial application but genuine structural parallels — where does this ancient situation map precisely onto today?
-- Be specific and concrete. Name real situations. Avoid vague spiritual clichés.
+- Not superficial application — genuine structural parallels where the ancient situation maps exactly onto today
+- Be specific and concrete. Name real situations, dynamics, and pressures. No vague spiritual clichés.
 - Where is the world today in a situation structurally identical to the world of this text?
-- What does this passage demand of the person who takes it seriously in 2025?
+- What does this passage demand of the person, the church, or the society that takes it seriously in 2026?
+- Where does obedience to this passage cost something today?
 """
 
     return json.dumps({
         "reference": ref,
-        "methodology": "BibleDeepDive 4-Layer Study",
-        "layers": ["Chapter Breakdown", "Cross-Linkages", "Commentary Insights", "Current Scenario"],
+        "methodology": "BibleDeepDive 8-Layer Study",
+        "layers": [
+            "Chapter Breakdown",
+            "Structural and Literary Craft",
+            "Covenantal Framework",
+            "Cross-Linkages",
+            "Christocentric Reading",
+            "Doctrinal Theology",
+            "Commentary Insights",
+            "Current Scenario"
+        ],
         "context_data": context_data,
         "chronology_data": chron_data,
         "lexicon_entries": lexicon_entries,
@@ -1597,8 +1647,8 @@ LAYER 4 — CURRENT SCENARIO
         "suggested_key_terms": suggested_terms,
         "has_commentary": len(commentary_entries) > 0,
         "analysis_prompt": analysis_prompt,
-        "instruction": "Execute all 4 layers in sequence. Use the structured data as your verified foundation. Do not skip any layer.",
-        "mcp_note": "BibleDeepDive methodology — bible_deep_study tool v1.0. Powered by bible-mcp structured database."
+        "instruction": "Execute all 8 layers in full sequence. Use the structured data as your verified foundation. Do not skip, abbreviate, or merge any layer. Each layer is theologically distinct and essential.",
+        "mcp_note": "BibleDeepDive methodology — bible_deep_study tool v2.0. 8-layer study. Powered by bible-mcp structured database."
     }, indent=2, ensure_ascii=False)
 
 
