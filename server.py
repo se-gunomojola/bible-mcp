@@ -17,7 +17,7 @@ Resources:
     biblical://context      — Political epochs, geographic data, cultural notes
     biblical://commentary   — Attributed commentary: Spurgeon, Calvin, Henry, Wright, Barclay
 
-Author: Segun Omojola — TB Network Bible Study Project
+Author: Segun Omojola
 """
 
 from mcp.server.fastmcp import FastMCP
@@ -25,6 +25,33 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List
 import json
 import re
+import os
+import sys
+
+# ── RAG Setup ─────────────────────────────────────────────────────────────────
+RAG_PATH = os.path.expanduser("~/bible-rag")
+_rag_available = False
+_search_commentaries = None
+_format_for_prompt = None
+
+if os.path.exists(RAG_PATH):
+    sys.path.insert(0, RAG_PATH)
+    try:
+        from query import search_commentaries as _search_commentaries
+        from query import format_for_prompt as _format_for_prompt
+        _rag_available = True
+    except Exception as e:
+        pass  # RAG unavailable — tools work without it
+
+def get_rag_commentary(reference: str) -> str:
+    if not _rag_available or not _search_commentaries:
+        return ""
+    try:
+        chunks = _search_commentaries(reference, top_k=6)
+        return _format_for_prompt(chunks) if chunks else ""
+    except Exception:
+        return ""
+
 
 mcp = FastMCP("bible_mcp")
 
@@ -1525,7 +1552,10 @@ async def bible_deep_study(params: DeepStudyInput) -> str:
         for c in commentary_entries:
             commentary_text += f"\n{c['commentator']} ({c['work']}):\n{c['insight']}\n"
 
-    # ── 5. Build the 8-layer analysis prompt ──────────────────────────────────
+    # ── 5. Get RAG commentary ──────────────────────────────────────────────────
+    rag_commentary = get_rag_commentary(ref)
+
+    # ── 6. Build the 8-layer analysis prompt ──────────────────────────────────
     analysis_prompt = f"""
 BIBLEDEEPDIVE — 8-LAYER STUDY ANALYSIS
 Reference: {ref}
@@ -1611,7 +1641,7 @@ What this passage teaches about the great doctrines of the faith.
 
 LAYER 7 — COMMENTARY INSIGHTS
 The voices of the tradition across the centuries.
-- Draw on the commentary entries above — engage each commentator substantively
+{rag_commentary if rag_commentary else "- Draw on the commentary entries above — engage each commentator substantively"}
 - Where do the commentators agree? Where do they see different or complementary things?
 - What has the church seen in this passage that individual reading tends to miss?
 - What is the most important interpretive move in the tradition for the serious student to grasp?
